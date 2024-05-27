@@ -1,0 +1,22 @@
+{% load static %}
+<section id="apresentacao" class="about">
+    <div class="container">
+        {% for d in data %}
+        <div class="section-title">
+            <h2>{{ d.titulo }}</h2>
+            <p>{{ d.texto|safe }}</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4" data-aos="fade-right">
+                <img src="{{ d.foto.url }}" alt="" class="img-responsive">
+            </div>
+            <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+                <h3>{{ d.sub_titulo|safe }}</h3>
+                <p class="fst-italic">
+                    {{ d.sub_texto|safe }}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
