@@ -26,11 +26,10 @@ SECRET_KEY = "django-insecure-y@m(k4()e#y1c*+=n(1f5g9qkeebvh2%y(_)8wmi-m^$q_pi0@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", ".vercel.app"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -89,16 +88,6 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "admin",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -154,30 +143,8 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "project/static"),)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# CKEDITOR_BASEPATH = "static/ckeditor/ckeditor/"
-
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
-
-# CKEDITOR_UPLOAD_PATH = "uploads/"  # Diretório para uploads
-# CKEDITOR_IMAGE_BACKEND = "pillow"  # Backend para imagens (se necessário)
-
-# CKEDITOR_CONFIGS = {
-#     "default": {
-#         "toolbar": "full",
-#         "height": 300,
-#         "width": "100%",
-#         "extraPlugins": ",".join(
-#             [
-#                 "uploadimage",  # Se você usa o upload de imagens
-#                 "embed",
-#                 "autoembed",
-#                 "blockquote",
-#                 # Outros plugins se necessário
-#             ]
-#         ),
-#     },
-# }
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
