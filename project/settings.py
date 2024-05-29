@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +27,12 @@ SECRET_KEY = "django-insecure-y@m(k4()e#y1c*+=n(1f5g9qkeebvh2%y(_)8wmi-m^$q_pi0@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
+
+# APP_NAME = os.environ.get("cassiamartinspsiapp")
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "cassiamartinspsiapp.fly.dev"]  # ← Updated!
+
+CSRF_TRUSTED_ORIGINS = ["https://cassiamartinspsiapp.fly.dev"]
 
 
 # Application definition
@@ -81,13 +87,37 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#     }
+# }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "cassiamartinspsi",
+#         "USER": "postgres",
+#         "PASSWORD": "admin",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get(
+            "DATABASE_URL",
+            "postgres://postgres:admin@localhost:5432/cassiamartinspsibd",
+        )
+    )
 }
 
+# STORAGES = {
+#     # ...
+#     "staticfiles": {"BACKEND": "cassiamartinspsibd.storage.S3Storage"}
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
