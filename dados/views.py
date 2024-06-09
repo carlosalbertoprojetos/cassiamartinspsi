@@ -1,13 +1,13 @@
 from django.shortcuts import render
 
-# from dados.models import Elemento, Abordagem
+from dados.models import Endereco, Email, Telefone
 
 
 # Create your views here.
 def index(request):
     template_name = "index.html"
-    # elemento = Elemento.objects.all()
-    # abordagem = Abordagem.objects.all()
-    # context = {"elemento": elemento, "abordagem": abordagem}
-    context = {}
+    endereco = Endereco.objects.all().last()
+    email = Email.objects.all().last()
+    telefone = Telefone.objects.all().last()
+    context = {"endereco": endereco, "email": email, "telefone": telefone}
     return render(request, template_name, context)

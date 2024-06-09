@@ -1,6 +1,14 @@
 from django import template
 
-from dados.models import Home, Apresentacao, IndiceAbordagem, Abordagem, Indice, Topico
+from dados.models import (
+    Home,
+    Apresentacao,
+    IndiceAbordagem,
+    Abordagem,
+    Indice,
+    Topico,
+    SubTopico,
+)
 
 register = template.Library()
 
@@ -35,9 +43,8 @@ def show_abordagem():
 @register.inclusion_tag("includes/topicos.html")
 def show_topicos():
     topicos = Topico.objects.all()
-    context = {
-        "topicos": topicos,
-    }
+    subtopicos = SubTopico.objects.all()
+    context = {"topicos": topicos, "subtopicos": subtopicos}
     return context
 
 

@@ -5,6 +5,7 @@ from .forms import HomeForm
 
 
 from .models import (
+    Endereco,
     Email,
     Telefone,
     Home,
@@ -18,9 +19,14 @@ from .models import (
     # TituloBloco,
     # Experiencia,
     Topico,
+    SubTopico,
     # Contato,
     # Mensagem,
 )
+
+
+@admin.register(Endereco)
+class Endereco(admin.ModelAdmin): ...
 
 
 @admin.register(Email)
@@ -164,6 +170,18 @@ class Abordagem(admin.ModelAdmin):
 #     ]
 #     list_filter = ["titulo_bloco"]
 #     search_fields = ["titulo_bloco"]
+
+
+@admin.register(SubTopico)
+class SubTopico(admin.ModelAdmin):
+    list_display = (
+        "topico",
+        "sub_titulo",
+        "sub_texto",
+        "data",
+        "publicado",
+        "data_publicacao",
+    )
 
 
 @admin.register(Topico)

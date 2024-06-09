@@ -5,6 +5,16 @@ from ckeditor.fields import RichTextField
 from django.utils.html import mark_safe
 
 
+class Endereco(models.Model):
+    endereco = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Endereços"
+
+    def __str__(self):
+        return self.endereco
+
+
 class Email(models.Model):
     email = models.EmailField()
 
@@ -105,12 +115,18 @@ class Indice(TimestampedModel):
     abordagem = models.ForeignKey(Abordagem, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name_plural = "Índices Abordagens"
+
     def __str__(self):
         return self.titulo
 
 
 class IndiceAbordagem(SubGrupo, TimestampedModel):
     indice = models.ForeignKey(Indice, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Textos Índices Abordagens"
 
 
 # class Experiencia(Grupo):
@@ -148,8 +164,11 @@ class Topico(Grupo):
         return self.titulo
 
 
-# class SubTopico(SubGrupo, TimestampedModel):
-#     topico = models.ForeignKey(Topico, on_delete=models.CASCADE)
+class SubTopico(SubGrupo, TimestampedModel):
+    topico = models.ForeignKey(Topico, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Subtópicos"
 
 
 # class Mensagem(models.Model):
