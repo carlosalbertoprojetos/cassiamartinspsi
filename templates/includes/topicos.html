@@ -12,23 +12,21 @@
         {% if forloop.counter0|divisibleby:2 %}
         <div class="row w-100">
             {% endif %}
+
             <div class="col-lg-6 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon"><i class="bi bi-briefcase"></i></div>
-                <h4 class="title"><a href="">{{ st.sub_titulo }}</a></h4>
-                <p class="description">{{ st.sub_texto|safe }}</p>
+                <div class="icon"><i class="bi bi-{{ st.icone }}"></i></div>
+                <div id="id_subtopicos">
+                    <h4 class="title"><a href="">{{ st.sub_titulo }}</a></h4>
+                    {{ st.sub_texto|safe|slice:":250" }}
+                </div>
             </div>
+
             {% if forloop.counter0|divisibleby:2 == False or forloop.last %}
         </div>
         {% endif %}
+
         {% endif %}
         {% endfor %}
-
-
-
-
-
-
         {% endfor %}
     </div>
-
 </section>

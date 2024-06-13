@@ -1,4 +1,5 @@
 from django import template
+from datetime import date
 
 from dados.models import (
     Home,
@@ -43,7 +44,26 @@ def show_abordagem():
 @register.inclusion_tag("includes/topicos.html")
 def show_topicos():
     topicos = Topico.objects.all()
-    subtopicos = SubTopico.objects.all()
+    hoje = date.today()
+
+    # Filtra os sub-tópicos
+    subtopicos = SubTopico.objects.filter(
+        publicado=True, data_publicacao__lte=hoje
+    ).order_by("-data_publicacao")[:6]
+
+    icones = [
+        "bi bi-briefcase",
+        "bi bi-card-checklist",
+        "bi bi-bar-chart",
+        "bi bi-binoculars",
+        "bi bi-brightness-high",
+        "bi bi-calendar4-week",
+    ]
+
+    # Associar ícones aos subtopicos
+    for i, subtopico in enumerate(subtopicos):
+        subtopico.icone = icones[i % len(icones)]  # Usar ícones de forma cíclica
+
     context = {"topicos": topicos, "subtopicos": subtopicos}
     return context
 

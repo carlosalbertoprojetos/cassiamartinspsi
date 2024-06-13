@@ -1407,3 +1407,8 @@ textarea.form-control-lg {
   -moz-appearance: none;
   appearance: none
 }
+
+#id_subtopicos>p {
+  margin-left: 80px;
+  line-height: 24px;
+}
