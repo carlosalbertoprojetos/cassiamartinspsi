@@ -6,10 +6,11 @@
             <h2>{{ d.titulo }}</h2>
             <p>{{ d.texto|safe }}</p>
         </div>
-        {% endfor %}
+
         <div class="row">
             <div class="col" data-aos="fade-up" data-aos-delay="100">
                 {% for i in indice %}
+                {% if i.abordagem_id == d.id %} {# Verifica se o índice está relacionado à abordagem atual #}
                 <h3 class="resume-title">{{ i.titulo }}</h3>
                 {% for ia in indice_abordagem %}
                 {% if ia.indice.titulo == i.titulo %}
@@ -19,7 +20,10 @@
                 </div>
                 {% endif %}
                 {% endfor %}
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
+        {% endfor %}
+
 </section>

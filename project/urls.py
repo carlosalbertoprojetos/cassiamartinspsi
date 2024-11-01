@@ -11,7 +11,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("dados.urls"), name="dados"),
     # terceiros
-    path("ckedit/", include("ckeditor_uploader.urls")),
+    path("ckeditor/", include("ckeditor_uploader.urls")),
 ]
 
 

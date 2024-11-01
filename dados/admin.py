@@ -12,8 +12,8 @@ from .models import (
     RedeSocial,
     Apresentacao,
     Abordagem,
-    Indice,
-    IndiceAbordagem,
+    IndicesAbordagem,
+    TextosIndiceAbordagem,
     # Elemento,
     # Abordagem,
     # TituloBloco,
@@ -75,18 +75,13 @@ class Apresentacao(admin.ModelAdmin):
     visualizar_imagem.short_description = "Imagem Cadastrada"
 
 
-class IndiceAbordagemInline(admin.TabularInline):
-    model = IndiceAbordagem
-    extra = 1
+# class IndiceAbordagemInline(admin.TabularInline):
+#     model = IndiceAbordagem
+#     extra = 1
 
 
-class IndiceInline(admin.TabularInline):
-    model = Indice
-    extra = 1
-
-
-@admin.register(IndiceAbordagem)
-class IndiceAbordagem(admin.ModelAdmin):
+@admin.register(TextosIndiceAbordagem)
+class TextosIndiceAbordagem(admin.ModelAdmin):
     list_display = (
         "indice",
         "sub_titulo",
@@ -95,10 +90,19 @@ class IndiceAbordagem(admin.ModelAdmin):
         "publicado",
         "data_publicacao",
     )
+    fieldsets = [
+        ("Assunto", {"fields": (("indice", "sub_titulo", "sub_texto"))}),
+        ("Controle", {"fields": (("data", "publicado", "data_publicacao"))}),
+    ]
 
 
-@admin.register(Indice)
-class Indice(admin.ModelAdmin):
+# class IndicesAbordagem(admin.TabularInline):
+#     model = IndicesAbordagem
+#     extra = 1
+
+
+@admin.register(IndicesAbordagem)
+class IndicesAbordagem(admin.ModelAdmin):
     list_display = (
         "titulo",
         "abordagem",
@@ -106,13 +110,15 @@ class Indice(admin.ModelAdmin):
         "publicado",
         "data_publicacao",
     )
-    # inlines = [IndiceAbordagemInline]
+
+
+# inlines = [IndiceAbordagemInline]
 
 
 @admin.register(Abordagem)
 class Abordagem(admin.ModelAdmin):
     list_display = ("titulo", "texto")
-    # inlines = [IndiceInline]
+    # inlines = [IndicesAbordagem]
 
 
 # @admin.register(Elemento)
@@ -182,6 +188,15 @@ class SubTopico(admin.ModelAdmin):
         "publicado",
         "data_publicacao",
     )
+    fieldsets = [
+        ("Assunto", {"fields": (("topico", "sub_titulo", "sub_texto"))}),
+        ("Controle", {"fields": (("data", "publicado", "data_publicacao"))}),
+    ]
+
+
+# class SubTopicoInline(admin.TabularInline):
+#     model = SubTopico
+#     extra = 1
 
 
 @admin.register(Topico)
@@ -196,6 +211,7 @@ class TopicoAdmin(admin.ModelAdmin):
     list_filter = ["titulo"]
     search_fields = ["titulo"]
     ordering = ("titulo",)
+    # inlines = [SubTopicoInline]
 
 
 # @admin.register(Contato)

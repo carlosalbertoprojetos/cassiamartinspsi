@@ -87,12 +87,12 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    }
+}
 
 # DATABASES = {
 #     "default": {
@@ -105,14 +105,14 @@ WSGI_APPLICATION = "project.wsgi.application"
 #     }
 # }
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get(
-            "DATABASE_URL",
-            "postgres://postgres:admin@localhost:5432/cassiamartinspsibd",
-        )
-    )
-}
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=os.environ.get(
+#             "DATABASE_URL",
+#             "postgres://postgres:admin@localhost:5432/cassiamartinspsibd",
+#         )
+#     )
+# }
 
 # STORAGES = {
 #     # ...
@@ -174,6 +174,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "project/static"),)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_RESTRICT_BY_USER = True
 
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -186,3 +187,10 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = "seu email do outlook"
 # SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "height": 300,
+    },
+}

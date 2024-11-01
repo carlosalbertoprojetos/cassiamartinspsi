@@ -4,9 +4,9 @@ from datetime import date
 from dados.models import (
     Home,
     Apresentacao,
-    IndiceAbordagem,
+    TextosIndiceAbordagem,
     Abordagem,
-    Indice,
+    IndicesAbordagem,
     Topico,
     SubTopico,
 )
@@ -31,8 +31,8 @@ def show_apresentacao():
 @register.inclusion_tag("includes/abordagem.html")
 def show_abordagem():
     abordagem = Abordagem.objects.all()
-    indice = Indice.objects.all()
-    indice_abordagem = IndiceAbordagem.objects.all()
+    indice = IndicesAbordagem.objects.all()
+    indice_abordagem = TextosIndiceAbordagem.objects.all()
     context = {
         "abordagem": abordagem,
         "indice": indice,

@@ -18,6 +18,6 @@ def topicos(request, id):
     topico = Topico.objects.all()
     subtopico = SubTopico.objects.all()
 
-    context = {"topico": topico}
+    context = {"topico": topico, "subtopico": subtopico}
 
     return render(request, template_name, context)
