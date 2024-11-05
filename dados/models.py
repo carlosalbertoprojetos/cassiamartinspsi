@@ -14,14 +14,12 @@ class Endereco(models.Model):
 
     def __str__(self):
         return self.endereco
-    
+
     def save(self, *args, **kwargs):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            Endereco.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            Endereco.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
@@ -41,9 +39,7 @@ class Email(models.Model):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            Endereco.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            Endereco.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
@@ -111,21 +107,19 @@ class Home(models.Model):
 
     def __str__(self):
         return self.titulo
-    
+
     def save(self, *args, **kwargs):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            Home.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            Home.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
 
-    @property
-    def view_image(self):
-        return mark_safe('<img src="%s" max-width="200px" />' % self.foto.url)
+    # @property
+    # def view_image(self):
+    #     return mark_safe('<img src="%s" max-width="200px" />' % self.foto.url)
 
 
 class Apresentacao(Grupo, SubGrupo):
@@ -137,21 +131,21 @@ class Apresentacao(Grupo, SubGrupo):
 
     def __str__(self):
         return str(self.titulo)
-    
+
     def save(self, *args, **kwargs):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            Apresentacao.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            Apresentacao.objects.filter(atual=True).exclude(id=self.id).update(
+                atual=False
+            )
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
 
-    @property
-    def view_image(self):
-        return mark_safe('<img src="%s" width="200px" />' % self.foto.url)
+    # @property
+    # def view_image(self):
+    #     return mark_safe('<img src="%s" width="200px" />' % self.foto.url)
 
 
 class Abordagem(Grupo):
@@ -167,12 +161,11 @@ class Abordagem(Grupo):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            Abordagem.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            Abordagem.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
+
 
 class IndicesAbordagem(TimestampedModel):
     abordagem = models.ForeignKey(Abordagem, on_delete=models.CASCADE)
@@ -189,12 +182,13 @@ class IndicesAbordagem(TimestampedModel):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            IndicesAbordagem.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            IndicesAbordagem.objects.filter(atual=True).exclude(id=self.id).update(
+                atual=False
+            )
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
+
 
 class TextosIndiceAbordagem(SubGrupo, TimestampedModel):
     indice = models.ForeignKey(IndicesAbordagem, on_delete=models.CASCADE)
@@ -206,9 +200,11 @@ class TextosIndiceAbordagem(SubGrupo, TimestampedModel):
         return self.indice.titulo
 
 
-
 class GrupoExperiencia(models.Model):
     nome = models.CharField(max_length=20)
+
+    class Meta:
+        verbose_name_plural = "4 A - Grupo Experiência"
 
     def __str__(self):
         return self.nome
@@ -217,31 +213,29 @@ class GrupoExperiencia(models.Model):
 class Experiencia(Grupo):
 
     class Meta:
-        verbose_name = "Bloco de Imagem"
-        verbose_name_plural = "Blocos de Imagens"
+        verbose_name_plural = "4 Experiências"
 
     def __str__(self):
         return self.titulo
 
 
-class Card(TimestampedModel):
+class Card(Grupo, TimestampedModel):
     experiencia = models.ForeignKey(Experiencia, on_delete=models.CASCADE)
     grupo = models.ForeignKey(GrupoExperiencia, on_delete=models.CASCADE)
-    link = models.CharField(max_length=255)
     imagem = models.ImageField()
 
-    @property
-    def view_image(self):
-        return mark_safe('<img src="%s" width="311px height="216px" />' % self.icone.url)
-        view_image.short_description = "Ícone"
-        view_image.allow_tags = True
+    class Meta:
+        verbose_name_plural = "4.1 Cards"
+
+    def __str__(self):
+        return f"{self.experiencia.titulo} - {self.grupo.nome} - {self.titulo}"
 
 
 class Topico(Grupo):
     atual = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name_plural = "4 Tópicos"
+        verbose_name_plural = "5 Tópicos"
 
     def __str__(self):
         return self.titulo
@@ -250,18 +244,17 @@ class Topico(Grupo):
         # Se o campo 'atual' for marcado como True
         if self.atual:
             # Define 'atual=False' para os outros endereços
-            Topico.objects.filter(atual=True).exclude(
-                id=self.id
-            ).update(atual=False)
+            Topico.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
 
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
+
 
 class SubTopico(SubGrupo, TimestampedModel):
     topico = models.ForeignKey(Topico, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "4.1 Subtópicos"
+        verbose_name_plural = "5.1 Subtópicos"
 
 
 # class Mensagem(models.Model):

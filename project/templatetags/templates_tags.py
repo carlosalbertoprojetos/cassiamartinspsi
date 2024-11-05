@@ -1,12 +1,17 @@
 from django import template
-from datetime import date
+from datetime import date, datetime
+from django.db.models import Max
+from django.shortcuts import get_object_or_404
+
 
 from dados.models import (
     Home,
     Apresentacao,
-    TextosIndiceAbordagem,
     Abordagem,
     IndicesAbordagem,
+    TextosIndiceAbordagem,
+    Experiencia,
+    Card,
     Topico,
     SubTopico,
 )
@@ -41,6 +46,57 @@ def show_abordagem():
     return context
 
 
+@register.inclusion_tag("includes/experiencia.html")
+def show_experiencia():
+    experiencia = Experiencia.objects.all()
+    data_desejada = datetime.now()
+    # filtra os objetos publicados com data de publicação maior ou igual à hoje
+    card = Card.objects.filter(
+        publicado=True,
+        data_publicacao__isnull=False,
+        data_publicacao__lte=data_desejada,
+    )
+
+    # Filtra o ID mais recente de cada grupo onde publicado é True
+    latest_ids = (
+        Card.objects.filter(
+            publicado=True,
+            data_publicacao__isnull=False,
+            data_publicacao__lte=data_desejada,
+        )
+        .values("grupo")
+        .annotate(latest_id=Max("id"))
+        .values_list("latest_id", flat=True)
+    )
+
+    # Filtra os grupos associados aos IDs mais recentes obtidos acima
+    grupos = Card.objects.filter(id__in=latest_ids).values("grupo__nome").distinct()
+
+    context = {
+        "experiencia": experiencia,
+        "grupos": grupos,
+        "card": card,
+    }
+    return context
+
+
+@register.inclusion_tag("includes/cardExperiencia.html")
+def show_card_experiencia(card_id):
+    data_desejada = datetime.now()
+
+    # Use get_object_or_404 para pegar um único objeto
+    card = get_object_or_404(
+        Card,
+        id=card_id,
+        publicado=True,
+        data_publicacao__isnull=False,
+        data_publicacao__lte=data_desejada,
+    )
+
+    context = {"card": card}  # card agora é um único objeto
+    return context
+
+
 @register.inclusion_tag("includes/topicos.html")
 def show_topicos():
     topicos = Topico.objects.all()
@@ -70,13 +126,6 @@ def show_topicos():
 
 @register.inclusion_tag("includes/.html")
 def show_():
-
-    pass
-
-
-@register.inclusion_tag("includes/.html")
-def show_():
-
     pass
 
 

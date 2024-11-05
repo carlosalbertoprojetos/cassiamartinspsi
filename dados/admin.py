@@ -7,6 +7,9 @@ from .forms import HomeForm
 from .models import (
     Endereco,
     Email,
+    GrupoExperiencia,
+    Experiencia,
+    Card,
     Telefone,
     Home,
     RedeSocial,
@@ -14,10 +17,6 @@ from .models import (
     Abordagem,
     IndicesAbordagem,
     TextosIndiceAbordagem,
-    # Elemento,
-    # Abordagem,
-    # TituloBloco,
-    # Experiencia,
     Topico,
     SubTopico,
     # Contato,
@@ -167,15 +166,26 @@ class Abordagem(admin.ModelAdmin):
 #     ordering = ("grupo",)
 
 
-# @admin.register(Experiencia)
-# class ExperienciaAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "titulo_bloco",
-#         "imagem",
-#         "texto",
-#     ]
-#     list_filter = ["titulo_bloco"]
-#     search_fields = ["titulo_bloco"]
+@admin.register(GrupoExperiencia)
+class GrupoExperienciaAdmin(admin.ModelAdmin): ...
+
+
+# class Card(admin.TabularInline):
+#     model = Card
+#     extra = 1
+
+
+@admin.register(Card)
+class CardAdmin(admin.ModelAdmin):
+    list_display = ["titulo", "grupo", "publicado", "experiencia"]
+
+
+@admin.register(Experiencia)
+class ExperienciaAdmin(admin.ModelAdmin):
+    list_display = [
+        "titulo",
+        "texto",
+    ]
 
 
 @admin.register(SubTopico)

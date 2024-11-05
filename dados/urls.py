@@ -7,5 +7,9 @@ app_name = "dados"
 
 urlpatterns = [
     path("", v.index, name="index"),
-    path("topicos/<slug>/", v.topicos, name="topicos"),
+    path(
+        "ajax/get_card_experience/<int:card_id>/",
+        v.get_card_experience,
+        name="get_card_experience",
+    ),
 ]

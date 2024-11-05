@@ -33,12 +33,44 @@
         <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
 
         <!-- ======= Header ======= -->
-        {% show_header %}
+        {% for d in data %}
+        <header id="header">
+            <div class="d-flex flex-column">
+                <div class="profile">
+                    <a href="#hero"><img src="{{ d.foto.url }}" alt="" class="img-responsive rounded-circle"></a>
+                    <h1 class="text-light"><a href="#hero">{{ d.titulo }}</a></h1>
+                    <div class="social-links mt-3 text-center">
+                        {% for rs in d.redes_sociais.all %}
+                        <a href="{{ rs.link }}" class="{{ rs.nome }}"><i class="{{ rs.icone }}"></i></a>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <nav id="navbar" class="nav-menu navbar ps-5">
+                    <ul>
+                        <li><a href="/#apresentacao" class="nav-link scrollto"><i class="bx bx-user"></i>
+                                <span>Apresentação</span></a></li>
+                        <li><a href="/#abordagem" class="nav-link scrollto"><i class="bx bx-file-blank"></i>
+                                <span>Abordagem</span></a>
+                        </li>
+                        <li><a href="/#experiencia" class="nav-link scrollto"><i class="bx bx-book-content"></i>
+                                <span>Experiência</span></a></li>
+                        <li><a href="/#topicos" class="nav-link scrollto"><i class="bx bx-server"></i>
+                                <span>Tópicos</span></a>
+                        </li>
+                        <li><a href="/#contato" class="nav-link scrollto"><i class="bx bx-envelope"></i>
+                                <span>Contato</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        {% endfor %}
 
         <!-- ======= Main ======= -->
         <main id="main">
 
-            {% block topicos %}
+            {% block card %}
             {% endblock %}
 
         </main>
