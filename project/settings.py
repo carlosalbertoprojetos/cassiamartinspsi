@@ -176,21 +176,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_RESTRICT_BY_USER = True
 
-
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = "smtp.mailtrap.io"
-# EMAIL_HOST_USER = "4cbde76bf57cd9"
-# EMAIL_HOST_PASSWORD = "f0f092992ce056"
-# EMAIL_PORT = "2525"
-
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = "seu email do outlook"
-# SERVER_EMAIL = DEFAULT_FROM_EMAIL
-
 CKEDITOR_5_CONFIGS = {
     "default": {
         "toolbar": "full",
         "height": 300,
     },
 }
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Servidor SMTP
+EMAIL_PORT = 587  # Porta do servidor SMTP
+EMAIL_USE_TLS = True  # Usar TLS
+EMAIL_HOST_USER = 'seuemail@gmail.com'  # Seu e-mail
+EMAIL_HOST_PASSWORD = 'sua_senha_ou_senha_do_app'  # Sua senha ou senha do app
+DEFAULT_FROM_EMAIL = 'seuemail@gmail.com'
+

@@ -1,15 +1,9 @@
-/*!
- * Bootstrap Icons v1.11.3 (https://icons.getbootstrap.com/)
- * Copyright 2019-2024 The Bootstrap Authors
- * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)
- */
-
 $bootstrap-icons-font: "bootstrap-icons" !default;
 $bootstrap-icons-font-dir: "./fonts" !default;
 $bootstrap-icons-font-file: "#{$bootstrap-icons-font-dir}/#{$bootstrap-icons-font}" !default;
 $bootstrap-icons-font-hash: "24e3eb84d0bcaf83d77f904c78ac1f47" !default;
 $bootstrap-icons-font-src: url("#{$bootstrap-icons-font-file}.woff2?#{$bootstrap-icons-font-hash}") format("woff2"),
-                           url("#{$bootstrap-icons-font-file}.woff?#{$bootstrap-icons-font-hash}") format("woff") !default;
+  url("#{$bootstrap-icons-font-file}.woff?#{$bootstrap-icons-font-hash}") format("woff") !default;
 
 @font-face {
   font-display: block;
@@ -2086,5 +2080,7 @@ $bootstrap-icons-map: (
 );
 
 @each $icon, $codepoint in $bootstrap-icons-map {
-  .bi-#{$icon}::before { content: $codepoint; }
+  .bi-#{$icon}::before {
+    content: $codepoint;
+  }
 }

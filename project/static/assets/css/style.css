@@ -975,7 +975,7 @@ section {
 .contact .php-email-form .error-message {
   display: none;
   color: #fff;
-  background: #ed3c0d;
+  /* background: #ed3c0d; */
   text-align: left;
   padding: 15px;
   font-weight: 600;
@@ -988,7 +988,7 @@ section {
 .contact .php-email-form .sent-message {
   display: none;
   color: #fff;
-  background: #18d26e;
+  /* background: #18d26e; */
   text-align: center;
   padding: 15px;
   font-weight: 600;
