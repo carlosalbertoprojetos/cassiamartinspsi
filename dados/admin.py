@@ -2,8 +2,6 @@ from django.contrib import admin
 
 
 from .forms import HomeForm
-
-
 from .models import (
     Endereco,
     Email,
@@ -19,8 +17,6 @@ from .models import (
     TextosIndiceAbordagem,
     Topico,
     SubTopico,
-    # Contato,
-    # Mensagem,
 )
 
 
@@ -74,11 +70,6 @@ class Apresentacao(admin.ModelAdmin):
     visualizar_imagem.short_description = "Imagem Cadastrada"
 
 
-# class IndiceAbordagemInline(admin.TabularInline):
-#     model = IndiceAbordagem
-#     extra = 1
-
-
 @admin.register(TextosIndiceAbordagem)
 class TextosIndiceAbordagem(admin.ModelAdmin):
     list_display = (
@@ -90,14 +81,9 @@ class TextosIndiceAbordagem(admin.ModelAdmin):
         "data_publicacao",
     )
     fieldsets = [
-        ("Assunto", {"fields": (("indice", "sub_titulo", "sub_texto"))}),
-        ("Controle", {"fields": (("data", "publicado", "data_publicacao"))}),
+        ("Assunto", {"fields": ("indice", "sub_titulo", "sub_texto")}),
+        ("Controle", {"fields": ("data", "publicado", "data_publicacao")}),
     ]
-
-
-# class IndicesAbordagem(admin.TabularInline):
-#     model = IndicesAbordagem
-#     extra = 1
 
 
 @admin.register(IndicesAbordagem)
@@ -111,68 +97,13 @@ class IndicesAbordagem(admin.ModelAdmin):
     )
 
 
-# inlines = [IndiceAbordagemInline]
-
-
 @admin.register(Abordagem)
 class Abordagem(admin.ModelAdmin):
     list_display = ("titulo", "texto")
-    # inlines = [IndicesAbordagem]
-
-
-# @admin.register(Elemento)
-# class ElementoAdmin(admin.ModelAdmin):
-#     list_display = ["grupo", "titulo", "texto"]
-#     list_filter = ["grupo", "titulo"]
-#     search_fields = ["grupo", "titulo", "texto"]
-#     ordering = ("grupo",)
-
-
-# @admin.register(Abordagem)
-# class AbordagemAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "elemento",
-#         "titulo",
-#         "texto",
-#         "data",
-#         "publicado",
-#         "data_publicacao",
-#     ]
-#     fieldsets = [
-#         ("Elemento da abordagem", {"fields": ("elemento",)}),
-#         ("Tema", {"fields": ("titulo", "texto")}),
-#         ("Registro", {"fields": ("data", "publicado", "data_publicacao")}),
-#     ]
-#     list_filter = [
-#         "elemento",
-#         "titulo",
-#         "texto",
-#         "data",
-#         "publicado",
-#         "data_publicacao",
-#     ]
-#     search_fields = ["elemento", "titulo", "data", "data_publicacao"]
-#     ordering = ("elemento",)
-
-
-# @admin.register(TituloBloco)
-# class TituloBlocoAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "grupo",
-#         "titulo",
-#     ]
-#     list_filter = ["grupo", "titulo"]
-#     search_fields = ["grupo", "titulo"]
-#     ordering = ("grupo",)
 
 
 @admin.register(GrupoExperiencia)
 class GrupoExperienciaAdmin(admin.ModelAdmin): ...
-
-
-# class Card(admin.TabularInline):
-#     model = Card
-#     extra = 1
 
 
 @admin.register(Card)
@@ -199,14 +130,9 @@ class SubTopico(admin.ModelAdmin):
         "data_publicacao",
     )
     fieldsets = [
-        ("Assunto", {"fields": (("topico", "sub_titulo", "sub_texto"))}),
-        ("Controle", {"fields": (("data", "publicado", "data_publicacao"))}),
+        ("Assunto", {"fields": ("topico", "sub_titulo", "sub_texto")}),
+        ("Controle", {"fields": ("data", "publicado", "data_publicacao")}),
     ]
-
-
-# class SubTopicoInline(admin.TabularInline):
-#     model = SubTopico
-#     extra = 1
 
 
 @admin.register(Topico)
@@ -216,52 +142,8 @@ class TopicoAdmin(admin.ModelAdmin):
         "texto",
     ]
     fieldsets = [
-        ("Assunto", {"fields": (("titulo", "texto"))}),
+        ("Assunto", {"fields": ("titulo", "texto")}),
     ]
     list_filter = ["titulo"]
     search_fields = ["titulo"]
     ordering = ("titulo",)
-    # inlines = [SubTopicoInline]
-
-
-# @admin.register(Contato)
-# class ContatoAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "localizacao",
-#         "email",
-#         "telefone",
-#     ]
-
-
-# @admin.register(Mensagem)
-# class MensagemAdmin(admin.ModelAdmin):
-#     # todos os campos ficam readonly
-#     readonly_fields = [field.name for field in Mensagem._meta.fields]
-
-#     list_display = [
-#         "nome",
-#         "email",
-#         "titulo",
-#         "texto",
-#         "data",
-#     ]
-#     fieldsets = [
-#         ("Identificação", {"fields": ("nome", "email")}),
-#         ("Assunto", {"fields": (("titulo", "texto"))}),
-#         (
-#             "Registro",
-#             {"fields": (("data",))},
-#         ),
-#     ]
-#     list_filter = [
-#         "nome",
-#         "email",
-#         "titulo",
-#         "texto",
-#         "data",
-#     ]
-#     search_fields = [
-#         "nome",
-#         "email",
-#         "data",
-#     ]

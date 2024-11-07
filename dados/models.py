@@ -230,17 +230,3 @@ class SubTopico(SubGrupo, TimestampedModel):
 
     def __str__(self):
         return self.topico.titulo
-
-
-# class Mensagem(models.Model):
-#     nome = models.CharField(max_length=30)
-#     email = models.EmailField()
-#     titulo = models.CharField(max_length=30)
-#     texto = models.TextField()
-#     data = models.DateField(default=datetime.datetime.now)
-
-#     class Meta:
-#         verbose_name_plural = "Mensagens"
-
-#     def __str__(self):
-#         return self.nome

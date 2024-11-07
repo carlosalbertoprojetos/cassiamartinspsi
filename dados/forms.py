@@ -7,7 +7,7 @@ from .models import Home
 class HomeForm(forms.ModelForm):
     class Meta:
         model = Home
-        fields = "__all__"
+        fields = ("titulo", "foto", "letreiro", "redes_sociais", "atual")
         widgets = {
             "letreiro": JSONEditorWidget(options={"mode": "tree"}),
             "texto": CKEditorWidget(),  # Adicionando o CKEditor para o campo texto

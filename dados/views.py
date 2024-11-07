@@ -37,7 +37,6 @@ def get_sub_topicos(request, subtop_id):
 def contato(request):
     if request.method == "POST":
         # Coletando os dados do formulário
-        nome = request.POST.get("name")
         email = request.POST.get("email")
         assunto = request.POST.get("subject")
         mensagem = request.POST.get("message")
@@ -53,5 +52,3 @@ def contato(request):
 
         # Retornando uma resposta JSON para o frontend (para exibir sucesso)
         return JsonResponse({"message": "Sua mensagem foi enviada com sucesso!"})
-
-    # return render(request, 'contato.html')  # Retorna o template se o método não for POST

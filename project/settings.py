@@ -27,13 +27,7 @@ SECRET_KEY = "django-insecure-y@m(k4()e#y1c*+=n(1f5g9qkeebvh2%y(_)8wmi-m^$q_pi0@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ["*"]
-
-# APP_NAME = os.environ.get("cassiamartinspsiapp")
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "cassiamartinspsiapp.fly.dev"]  # ← Updated!
-
-CSRF_TRUSTED_ORIGINS = ["https://cassiamartinspsiapp.fly.dev"]
-
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*"]  # ← Updated!
 
 # Application definition
 INSTALLED_APPS = [
@@ -114,10 +108,6 @@ DATABASES = {
 #     )
 # }
 
-# STORAGES = {
-#     # ...
-#     "staticfiles": {"BACKEND": "cassiamartinspsibd.storage.S3Storage"}
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -185,11 +175,10 @@ CKEDITOR_5_CONFIGS = {
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Servidor SMTP
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"  # Servidor SMTP
 EMAIL_PORT = 587  # Porta do servidor SMTP
 EMAIL_USE_TLS = True  # Usar TLS
-EMAIL_HOST_USER = 'seuemail@gmail.com'  # Seu e-mail
-EMAIL_HOST_PASSWORD = 'sua_senha_ou_senha_do_app'  # Sua senha ou senha do app
-DEFAULT_FROM_EMAIL = 'seuemail@gmail.com'
-
+EMAIL_HOST_USER = "seuemail@gmail.com"  # Seu e-mail
+EMAIL_HOST_PASSWORD = "sua_senha_ou_senha_do_app"  # Sua senha ou senha do app
+DEFAULT_FROM_EMAIL = "seuemail@gmail.com"
