@@ -1,8 +1,6 @@
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
-from datetime import datetime
 
-from dados.models import Card, Endereco, Email, Home, Telefone
+from dados.models import Card, Endereco, Email, Home, SubTopico, Telefone
 
 
 # Create your views here.
@@ -20,4 +18,12 @@ def get_card_experience(request, card_id):
     data = Home.objects.all()
     card = get_object_or_404(Card, id=card_id)
     context = {"data": data, "card": card}
+    return render(request, template_name, context)
+
+
+def get_sub_topicos(request, subtop_id):
+    template_name = "includes/subTopicos.html"
+    data = Home.objects.all()
+    subtop = get_object_or_404(SubTopico, id=subtop_id)
+    context = {"data": data, "subtop": subtop}
     return render(request, template_name, context)

@@ -1,16 +1,16 @@
 {% load static %}
 <section id="abordagem" class="resume">
+    
     <div class="container">
         {% for d in abordagem %}
         <div class="section-title">
             <h2>{{ d.titulo }}</h2>
-            <p>{{ d.texto|safe }}</p>
+            <p>{{ d.texto|safe|truncatechars:505 }}</p>
         </div>
-
         <div class="row">
-            <div class="col" data-aos="fade-up" data-aos-delay="100">
-                {% for i in indice %}
-                {% if i.abordagem_id == d.id %} {# Verifica se o índice está relacionado à abordagem atual #}
+            {% for i in indice %}
+            {% if i.abordagem_id == d.id %}
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="resume-title">{{ i.titulo }}</h3>
                 {% for ia in indice_abordagem %}
                 {% if ia.indice.titulo == i.titulo %}
@@ -20,9 +20,10 @@
                 </div>
                 {% endif %}
                 {% endfor %}
-                {% endif %}
-                {% endfor %}
             </div>
-        </div>
+            {% endif %}
+            {% endfor %}
+        </div>        
         {% endfor %}
+
 </section>

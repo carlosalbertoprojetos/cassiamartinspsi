@@ -2,7 +2,6 @@ import datetime
 from django.db import models
 
 from ckeditor.fields import RichTextField
-from django.utils.html import mark_safe
 
 
 class Endereco(models.Model):
@@ -57,15 +56,27 @@ class Telefone(models.Model):
 
 # https://acervolima.com/RichTextField-modelos-django/
 class Grupo(models.Model):
-    titulo = models.CharField(max_length=30)
+    titulo = models.CharField(max_length=50)
     texto = RichTextField(blank=True, null=True)
+    atual = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
 
+    def save(self, *args, **kwargs):
+        # Se o campo 'atual' for marcado como True
+        if self.atual:
+            # Define 'atual=False' para os outros endereços
+            IndicesAbordagem.objects.filter(atual=True).exclude(id=self.id).update(
+                atual=False
+            )
+
+        # Chama o método save() original para salvar o endereço
+        super().save(*args, **kwargs)
+
 
 class SubGrupo(models.Model):
-    sub_titulo = models.CharField(max_length=30)
+    sub_titulo = models.CharField(max_length=100)
     sub_texto = RichTextField(blank=True, null=True)
 
     class Meta:
@@ -87,6 +98,7 @@ class RedeSocial(models.Model):
     nome = models.CharField(max_length=30)
     icone = models.CharField(max_length=255)
     link = models.CharField(max_length=255)
+    ativo = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "1.1 Redes Sociais"
@@ -96,7 +108,7 @@ class RedeSocial(models.Model):
 
 
 class Home(models.Model):
-    titulo = models.CharField(max_length=30)
+    titulo = models.CharField(max_length=50)
     foto = models.ImageField(upload_to="home/foto/")
     letreiro = models.JSONField(blank=True, null=True)
     redes_sociais = models.ManyToManyField(RedeSocial)
@@ -117,14 +129,9 @@ class Home(models.Model):
         # Chama o método save() original para salvar o endereço
         super().save(*args, **kwargs)
 
-    # @property
-    # def view_image(self):
-    #     return mark_safe('<img src="%s" max-width="200px" />' % self.foto.url)
-
 
 class Apresentacao(Grupo, SubGrupo):
     foto = models.ImageField(upload_to="apresentacao/foto/")
-    atual = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "2 Apresentações"
@@ -132,24 +139,8 @@ class Apresentacao(Grupo, SubGrupo):
     def __str__(self):
         return str(self.titulo)
 
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Apresentacao.objects.filter(atual=True).exclude(id=self.id).update(
-                atual=False
-            )
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
-
-    # @property
-    # def view_image(self):
-    #     return mark_safe('<img src="%s" width="200px" />' % self.foto.url)
-
 
 class Abordagem(Grupo):
-    atual = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "3 Abordagens"
@@ -157,19 +148,10 @@ class Abordagem(Grupo):
     def __str__(self):
         return self.titulo
 
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Abordagem.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
-
 
 class IndicesAbordagem(TimestampedModel):
     abordagem = models.ForeignKey(Abordagem, on_delete=models.CASCADE)
-    titulo = models.CharField(max_length=30)
+    titulo = models.CharField(max_length=50)
     atual = models.BooleanField(default=True)
 
     class Meta:
@@ -232,7 +214,6 @@ class Card(Grupo, TimestampedModel):
 
 
 class Topico(Grupo):
-    atual = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "5 Tópicos"
@@ -240,21 +221,15 @@ class Topico(Grupo):
     def __str__(self):
         return self.titulo
 
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Topico.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
-
 
 class SubTopico(SubGrupo, TimestampedModel):
     topico = models.ForeignKey(Topico, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "5.1 Subtópicos"
+
+    def __str__(self):
+        return self.topico.titulo
 
 
 # class Mensagem(models.Model):

@@ -12,4 +12,9 @@ urlpatterns = [
         v.get_card_experience,
         name="get_card_experience",
     ),
+    path(
+        "ajax/get_sub_topicos/<int:subtop_id>/",
+        v.get_sub_topicos,
+        name="get_sub_topicos",
+    ),
 ]

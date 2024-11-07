@@ -2,25 +2,28 @@
 
 {% load static templates_tags %}
 
-{% block card %}
+{% block extra %}
 
 <section id="card{{ card.id }}" class="portfolio">
+
     <div class="container">
         <!-- Exibir informações do card -->
         <div class="section-title">
             <h2>{{ card.titulo }}</h2>
             <div class="d-flex gap-2">
-                <img src="{{ card.imagem.url }}" style="width: 200px;height: 180px;">
+                <img class="d-none d-sm-block" src="{{ card.imagem.url }}" style="width: 200px; height: 180px;">
                 <p>{{ card.texto|safe }}</p>
             </div>
             <p>{{ card.grupo.nome }}</p>
         </div>
-        <div class="fst-italic text-muted text12 text-end">Criado em {{ card.data }}<br>
-            {% if card.publicado and card.data_publicado %}
-            Publicado em {{ card.publicado }}
+        <div class="fst-italic text-muted text12 text-end">
+            <!-- Criado em {{ card.data }}<br> -->
+            {% if card.publicado and card.data_publicacao %}
+            Publicado em {{ card.data_publicacao }}
             {% endif %}
         </div>
     </div>
+
 </section>
 
 {% endblock %}

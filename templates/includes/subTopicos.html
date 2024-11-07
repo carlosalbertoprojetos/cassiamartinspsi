@@ -1,0 +1,27 @@
+{% extends 'base.html'%}
+
+{% load static templates_tags %}
+
+{% block extra %}
+
+<section id="subtop{{ subtop.id }}" class="services vh-100 d-flex flex-column">
+
+    <div class="container">
+        <!-- Exibir informações do card -->
+        <div class="section-title">
+            <h2>{{ subtop.sub_titulo }}</h2>
+            <div class="d-flex gap-2">
+                <p>{{ subtop.sub_texto|safe }}</p>
+            </div>
+        </div>
+        <div class="fst-italic text-muted text12 text-end">
+            <!-- Criado em {{ subtop.data }}<br> -->
+            {% if subtop.publicado and subtop.data_publicacao %}
+            Publicado em {{ subtop.data_publicacao }}
+            {% endif %}
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

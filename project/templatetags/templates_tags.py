@@ -21,21 +21,21 @@ register = template.Library()
 
 @register.inclusion_tag("includes/header.html")
 def show_header():
-    data = Home.objects.all()
+    data = Home.objects.filter(atual=True)
     context = {"data": data}
     return context
 
 
 @register.inclusion_tag("includes/apresentacao.html")
 def show_apresentacao():
-    data = Apresentacao.objects.all()
+    data = Apresentacao.objects.filter(atual=True)
     context = {"data": data}
     return context
 
 
 @register.inclusion_tag("includes/abordagem.html")
 def show_abordagem():
-    abordagem = Abordagem.objects.all()
+    abordagem = Abordagem.objects.filter(atual=True)
     indice = IndicesAbordagem.objects.all()
     indice_abordagem = TextosIndiceAbordagem.objects.all()
     context = {
@@ -48,7 +48,7 @@ def show_abordagem():
 
 @register.inclusion_tag("includes/experiencia.html")
 def show_experiencia():
-    experiencia = Experiencia.objects.all()
+    experiencia = Experiencia.objects.filter(atual=True)
     data_desejada = datetime.now()
     # filtra os objetos publicados com data de publicação maior ou igual à hoje
     card = Card.objects.filter(
@@ -99,7 +99,7 @@ def show_card_experiencia(card_id):
 
 @register.inclusion_tag("includes/topicos.html")
 def show_topicos():
-    topicos = Topico.objects.all()
+    topicos = Topico.objects.filter(atual=True)
     hoje = date.today()
 
     # Filtra os sub-tópicos
