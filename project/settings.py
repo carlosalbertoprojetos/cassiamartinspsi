@@ -1,6 +1,8 @@
+from pathlib import Path
 import os
 import dj_database_url
-from pathlib import Path
+
+# from decouple import config
 
 # import environ
 
@@ -83,6 +85,7 @@ DATABASES = {
     }
 }
 
+
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -94,15 +97,7 @@ DATABASES = {
 #     }
 # }
 
-# DATABASES = {
-#     "default": dj_database_url.config(
-#         default=os.environ.get(
-#             "DATABASE_URL",
-#             "postgres://postgres:admin@localhost:5432/cassiamartinspsibd",
-#         )
-#     )
-# }
-
+DATABASES["default"] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -149,7 +144,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "staticfiles")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "staticfiles_build")
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "project/static"),)
 
