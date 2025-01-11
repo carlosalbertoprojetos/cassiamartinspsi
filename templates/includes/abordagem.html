@@ -1,8 +1,9 @@
-<section id="abordagem" class="resume vh-100">
+<section id="abordagem" class="resume vh-100 overflow-auto">
     <div class="container">
         {% for abordagem_titulo, indices in dados_organizados.items %}
         <div class="section-title">
             <h2>{{ abordagem_titulo }}</h2>
+            <p>{{ abordagem_textos|safe }}
         </div>
         <div class="row">
             {% if indices|length > 1 %}

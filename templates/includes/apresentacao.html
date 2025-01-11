@@ -4,7 +4,7 @@
         {% for d in data %}
         <div class="section-title">
             <h2>{{ d.titulo }}</h2>
-            <p>{{ d.texto|safe|truncatechars:560 }}</p>
+            <p>{{ d.texto|safe }}</p>
         </div>
         <div class="row">
             <div class="col-lg-4" data-aos="fade-right">

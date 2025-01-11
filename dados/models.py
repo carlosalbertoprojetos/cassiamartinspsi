@@ -23,7 +23,7 @@ class Endereco(AtualizadorModel):
     endereco = models.CharField(max_length=255)
 
     class Meta:
-        verbose_name_plural = "Endereços"
+        verbose_name_plural = "Endereço"
 
     def __str__(self):
         return self.endereco
@@ -33,7 +33,7 @@ class Email(AtualizadorModel):
     email = models.EmailField()
 
     class Meta:
-        verbose_name_plural = "Emails"
+        verbose_name_plural = "Email"
 
     def __str__(self):
         return self.email
@@ -43,7 +43,7 @@ class Telefone(models.Model):
     numero = models.CharField(max_length=15)
 
     class Meta:
-        verbose_name_plural = "Telefones"
+        verbose_name_plural = "Telefone"
 
     def __str__(self):
         return self.numero
@@ -82,7 +82,7 @@ class RedeSocial(models.Model):
     ativo = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name_plural = "1.1 Redes Sociais"
+        verbose_name_plural = "1.1 Rede Social"
 
     def __str__(self):
         return self.nome
@@ -95,7 +95,7 @@ class Home(AtualizadorModel):
     redes_sociais = models.ManyToManyField(RedeSocial)
 
     class Meta:
-        verbose_name_plural = "1 HomePages"
+        verbose_name_plural = "1 HomePage"
 
     def __str__(self):
         return self.titulo
@@ -105,25 +105,16 @@ class Apresentacao(Grupo, SubGrupo):
     foto = models.ImageField(upload_to="apresentacao/foto/")
 
     class Meta:
-        verbose_name_plural = "2 Apresentações"
+        verbose_name_plural = "2 Apresentação"
 
     def __str__(self):
         return str(self.titulo)
-
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Home.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
 
 
 class Abordagem(Grupo):
 
     class Meta:
-        verbose_name_plural = "3 Abordagens"
+        verbose_name_plural = "3 Abordagem"
 
     def __str__(self):
         return self.titulo
@@ -134,18 +125,17 @@ class IndicesAbordagem(TimestampedModel):
     titulo = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name_plural = "3.1 Índices"
+        verbose_name_plural = "3.1 Índice"
 
     def __str__(self):
         return self.titulo
-
 
 
 class TextosIndiceAbordagem(SubGrupo, TimestampedModel):
     indice = models.ForeignKey(IndicesAbordagem, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "3.2 Textos"
+        verbose_name_plural = "3.2 Texto"
 
     def __str__(self):
         return str(self.indice)
@@ -155,7 +145,7 @@ class GrupoExperiencia(models.Model):
     nome = models.CharField(max_length=20)
 
     class Meta:
-        verbose_name_plural = "4 A - Grupo Experiência"
+        verbose_name_plural = "4.1 Título Grupo Card"
 
     def __str__(self):
         return self.nome
@@ -164,7 +154,7 @@ class GrupoExperiencia(models.Model):
 class Experiencia(Grupo):
 
     class Meta:
-        verbose_name_plural = "4 Experiências"
+        verbose_name_plural = "4 Experiência"
 
     def __str__(self):
         return self.titulo
@@ -176,7 +166,7 @@ class Card(Grupo, TimestampedModel):
     imagem = models.ImageField()
 
     class Meta:
-        verbose_name_plural = "4.1 Cards"
+        verbose_name_plural = "4.2 Card"
 
     def __str__(self):
         return f"{self.experiencia.titulo} - {self.grupo.nome} - {self.titulo}"
@@ -185,7 +175,7 @@ class Card(Grupo, TimestampedModel):
 class Topico(Grupo):
 
     class Meta:
-        verbose_name_plural = "5 Tópicos"
+        verbose_name_plural = "5 Tópico"
 
     def __str__(self):
         return self.titulo
@@ -195,7 +185,7 @@ class SubTopico(SubGrupo, TimestampedModel):
     topico = models.ForeignKey(Topico, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "5.1 Subtópicos"
+        verbose_name_plural = "5.1 Subtópico"
 
     def __str__(self):
         return self.topico.titulo

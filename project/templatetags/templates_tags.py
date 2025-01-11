@@ -37,13 +37,19 @@ def show_apresentacao():
 def show_abordagem():
     dados_organizados = defaultdict(lambda: defaultdict(list))
 
+    abordagem_textos = {}  # Armazena os textos das abordagens
+
     # Obtém as abordagens, seus respectivos índices e conteúdos
     abordagens = TextosIndiceAbordagem.objects.filter(
         indice__abordagem__atual=True, data_publicacao__lte=hoje
     )
+
     for item in abordagens:
         abordagem_titulo = item.indice.abordagem.titulo
+        abordagem_textos = item.indice.abordagem.texto
         indice_titulo = item.indice.titulo
+
+        # Organiza os itens em 'dados_organizados'
         dados_organizados[abordagem_titulo][indice_titulo].append(item)
 
     # Converte defaultdicts aninhados em dicionários simples
@@ -53,6 +59,7 @@ def show_abordagem():
 
     context = {
         "dados_organizados": dados_organizados,
+        "abordagem_textos": abordagem_textos,  # Inclui os textos das abordagens
     }
     return context
 
