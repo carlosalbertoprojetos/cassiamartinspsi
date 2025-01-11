@@ -4,9 +4,23 @@ from django.db import models
 from ckeditor.fields import RichTextField
 
 
-class Endereco(models.Model):
-    endereco = models.CharField(max_length=255)
+class AtualizadorModel(models.Model):
     atual = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        if self.atual:
+            # Define 'atual=False' para outras instâncias do mesmo modelo
+            self.__class__.objects.filter(atual=True).exclude(id=self.id).update(
+                atual=False
+            )
+        super().save(*args, **kwargs)
+
+
+class Endereco(AtualizadorModel):
+    endereco = models.CharField(max_length=255)
 
     class Meta:
         verbose_name_plural = "Endereços"
@@ -14,34 +28,15 @@ class Endereco(models.Model):
     def __str__(self):
         return self.endereco
 
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Endereco.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
 
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
-
-
-class Email(models.Model):
+class Email(AtualizadorModel):
     email = models.EmailField()
-    atual = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "Emails"
 
     def __str__(self):
         return self.email
-
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Endereco.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
 
 
 class Telefone(models.Model):
@@ -55,24 +50,12 @@ class Telefone(models.Model):
 
 
 # https://acervolima.com/RichTextField-modelos-django/
-class Grupo(models.Model):
+class Grupo(AtualizadorModel):
     titulo = models.CharField(max_length=50)
     texto = RichTextField(blank=True, null=True)
-    atual = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
-
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            IndicesAbordagem.objects.filter(atual=True).exclude(id=self.id).update(
-                atual=False
-            )
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
 
 
 class SubGrupo(models.Model):
@@ -83,17 +66,15 @@ class SubGrupo(models.Model):
         abstract = True
 
 
-# https://github.com/carlosalbertoprojetos/reinosdeferro/blob/master/reinosdeferro/models.py
 class TimestampedModel(models.Model):
     data = models.DateField(default=datetime.datetime.now)
-    publicado = models.BooleanField(default=False)
+    exibindo = models.BooleanField(default=False)
     data_publicacao = models.DateField(blank=True, null=True)
 
     class Meta:
         abstract = True
 
 
-# https://github.com/carlosalbertoprojetos/reinosdeferro/blob/master/reinosdeferro/models.py
 class RedeSocial(models.Model):
     nome = models.CharField(max_length=30)
     icone = models.CharField(max_length=255)
@@ -107,27 +88,17 @@ class RedeSocial(models.Model):
         return self.nome
 
 
-class Home(models.Model):
+class Home(AtualizadorModel):
     titulo = models.CharField(max_length=50)
     foto = models.ImageField(upload_to="home/foto/")
     letreiro = models.JSONField(blank=True, null=True)
     redes_sociais = models.ManyToManyField(RedeSocial)
-    atual = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "1 HomePages"
 
     def __str__(self):
         return self.titulo
-
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            Home.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
 
 
 class Apresentacao(Grupo, SubGrupo):
@@ -138,6 +109,15 @@ class Apresentacao(Grupo, SubGrupo):
 
     def __str__(self):
         return str(self.titulo)
+
+    def save(self, *args, **kwargs):
+        # Se o campo 'atual' for marcado como True
+        if self.atual:
+            # Define 'atual=False' para os outros endereços
+            Home.objects.filter(atual=True).exclude(id=self.id).update(atual=False)
+
+        # Chama o método save() original para salvar o endereço
+        super().save(*args, **kwargs)
 
 
 class Abordagem(Grupo):
@@ -152,7 +132,6 @@ class Abordagem(Grupo):
 class IndicesAbordagem(TimestampedModel):
     abordagem = models.ForeignKey(Abordagem, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=50)
-    atual = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "3.1 Índices"
@@ -160,16 +139,6 @@ class IndicesAbordagem(TimestampedModel):
     def __str__(self):
         return self.titulo
 
-    def save(self, *args, **kwargs):
-        # Se o campo 'atual' for marcado como True
-        if self.atual:
-            # Define 'atual=False' para os outros endereços
-            IndicesAbordagem.objects.filter(atual=True).exclude(id=self.id).update(
-                atual=False
-            )
-
-        # Chama o método save() original para salvar o endereço
-        super().save(*args, **kwargs)
 
 
 class TextosIndiceAbordagem(SubGrupo, TimestampedModel):
@@ -179,7 +148,7 @@ class TextosIndiceAbordagem(SubGrupo, TimestampedModel):
         verbose_name_plural = "3.2 Textos"
 
     def __str__(self):
-        return self.indice.titulo
+        return str(self.indice)
 
 
 class GrupoExperiencia(models.Model):

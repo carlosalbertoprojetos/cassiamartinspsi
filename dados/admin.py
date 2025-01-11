@@ -1,5 +1,6 @@
 from django.contrib import admin
-
+from django.utils.html import format_html
+from django.utils.text import Truncator
 
 from .forms import HomeForm
 from .models import (
@@ -35,16 +36,25 @@ class Telefone(admin.ModelAdmin): ...
 @admin.register(Home)
 class Home(admin.ModelAdmin):
     form = HomeForm
-    list_display = ["titulo", "letreiro"]
+    list_display = ["titulo", "atual", "letreiro"]
     list_filter = ["titulo", "letreiro"]
     search_fields = ["titulo", "letreiro"]
     readonly_fields = ("visualizar_imagem",)
 
-    def visualizar_imagem(self, obj):
-        return obj.view_image
+    fieldsets = [
+        ("Tema", {"fields": ("titulo", "atual", ("foto", "visualizar_imagem"))}),
+        ("Assunto", {"fields": ("redes_sociais",)}),
+    ]
 
-    visualizar_imagem.allow_tags = True
-    visualizar_imagem.short_description = "Imagem Cadastrada"
+    def visualizar_imagem(self, obj):
+        if obj.foto:  # Certifique-se de que o campo existe e contém um valor
+            return format_html(
+                '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
+                obj.foto.url,
+            )
+        return "Sem imagem"
+
+    visualizar_imagem.short_description = "Imagem Salva"
 
 
 @admin.register(RedeSocial)
@@ -56,18 +66,77 @@ class RedeSocial(admin.ModelAdmin):
 
 @admin.register(Apresentacao)
 class Apresentacao(admin.ModelAdmin):
-    list_display = ["titulo", "foto", "texto"]
+    list_display = ["titulo", "atual", "foto", "texto"]
     list_filter = ["titulo"]
     search_fields = [
         "titulo",
     ]
     readonly_fields = ("visualizar_imagem",)
 
-    def visualizar_imagem(self, obj):
-        return obj.view_image
+    fieldsets = [
+        (
+            "Tema",
+            {"fields": ("titulo", "atual", ("foto", "visualizar_imagem"), "texto")},
+        ),
+        ("Assunto", {"fields": ("sub_titulo", "sub_texto")}),
+    ]
 
-    visualizar_imagem.allow_tags = True
-    visualizar_imagem.short_description = "Imagem Cadastrada"
+    def visualizar_imagem(self, obj):
+        if obj.foto:  # Certifique-se de que o campo existe e contém um valor
+            return format_html(
+                '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
+                obj.foto.url,
+            )
+        return "Sem imagem"
+
+    visualizar_imagem.short_description = "Imagem Salva"
+
+
+@admin.register(Abordagem)
+class Abordagem(admin.ModelAdmin):
+    list_display = ("titulo", "atual", "texto")
+    list_filter = ["titulo"]
+    search_fields = [
+        "titulo",
+    ]
+    fieldsets = [
+        ("Tema", {"fields": ("titulo", "atual", "texto")}),
+    ]
+
+
+@admin.register(IndicesAbordagem)
+class IndicesAbordagemAdmin(admin.ModelAdmin):
+    list_display = (
+        "titulo",
+        "abordagem",
+        "format_data",
+        "exibindo",
+        "data_publicacao",
+    )
+    list_filter = ["titulo"]
+    search_fields = [
+        "titulo",
+    ]
+    readonly_fields = ("format_data",)
+    fieldsets = [
+        ("Assunto", {"fields": ("abordagem", "titulo")}),
+        (
+            "Controle",
+            {
+                "fields": (
+                    "format_data",
+                    ("exibindo", "data_publicacao"),
+                )
+            },
+        ),
+    ]
+
+    def format_data(self, obj):
+        if obj.data:
+            return obj.data.strftime("%d/%m/%Y")
+        return "—"
+
+    format_data.short_description = "Criado"
 
 
 @admin.register(TextosIndiceAbordagem)
@@ -75,31 +144,40 @@ class TextosIndiceAbordagem(admin.ModelAdmin):
     list_display = (
         "indice",
         "sub_titulo",
-        "sub_texto",
-        "data",
-        "publicado",
+        "sub_texto_truncado",
+        "format_data",
+        "exibindo",
         "data_publicacao",
     )
+    list_filter = ["indice"]
+    search_fields = [
+        "indice",
+    ]
+    readonly_fields = ("format_data",)
     fieldsets = [
         ("Assunto", {"fields": ("indice", "sub_titulo", "sub_texto")}),
-        ("Controle", {"fields": ("data", "publicado", "data_publicacao")}),
+        (
+            "Controle",
+            {
+                "fields": (
+                    "format_data",
+                    ("exibindo", "data_publicacao"),
+                )
+            },
+        ),
     ]
 
+    def format_data(self, obj):
+        if obj.data:
+            return obj.data.strftime("%d/%m/%Y")
+        return "—"
 
-@admin.register(IndicesAbordagem)
-class IndicesAbordagem(admin.ModelAdmin):
-    list_display = (
-        "titulo",
-        "abordagem",
-        "data",
-        "publicado",
-        "data_publicacao",
-    )
+    format_data.short_description = "Criado"
 
+    def sub_texto_truncado(self, obj):
+        return Truncator(obj.sub_texto).chars(50)  # Limita a 50 caracteres
 
-@admin.register(Abordagem)
-class Abordagem(admin.ModelAdmin):
-    list_display = ("titulo", "texto")
+    sub_texto_truncado.short_description = "Texto"  # Título da coluna
 
 
 @admin.register(GrupoExperiencia)
@@ -108,7 +186,7 @@ class GrupoExperienciaAdmin(admin.ModelAdmin): ...
 
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
-    list_display = ["titulo", "grupo", "publicado", "experiencia"]
+    list_display = ["titulo", "grupo", "exibindo", "experiencia"]
 
 
 @admin.register(Experiencia)
@@ -126,12 +204,12 @@ class SubTopico(admin.ModelAdmin):
         "sub_titulo",
         "sub_texto",
         "data",
-        "publicado",
+        "exibindo",
         "data_publicacao",
     )
     fieldsets = [
         ("Assunto", {"fields": ("topico", "sub_titulo", "sub_texto")}),
-        ("Controle", {"fields": ("data", "publicado", "data_publicacao")}),
+        ("Controle", {"fields": ("data", "exibindo", "data_publicacao")}),
     ]
 
 

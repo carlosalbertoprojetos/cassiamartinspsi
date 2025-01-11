@@ -1,29 +1,48 @@
-{% load static %}
-<section id="abordagem" class="resume">
-    
+<section id="abordagem" class="resume vh-100">
     <div class="container">
-        {% for d in abordagem %}
+        {% for abordagem_titulo, indices in dados_organizados.items %}
         <div class="section-title">
-            <h2>{{ d.titulo }}</h2>
-            <p>{{ d.texto|safe|truncatechars:505 }}</p>
+            <h2>{{ abordagem_titulo }}</h2>
         </div>
         <div class="row">
-            {% for i in indice %}
-            {% if i.abordagem_id == d.id %}
+            {% if indices|length > 1 %}
+            {% for indice_titulo, conteudos in indices.items %}
             <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="resume-title">{{ i.titulo }}</h3>
-                {% for ia in indice_abordagem %}
-                {% if ia.indice.titulo == i.titulo %}
+                <h3 class="resume-title mt-0">{{ indice_titulo }}</h3>
+                {% for conteudo in conteudos %}
                 <div class="resume-item">
-                    <h4>{{ ia.sub_titulo }}</h4>
-                    <p><em>{{ ia.sub_texto|safe }}</em></p>
+                    <h4>{{ conteudo.sub_titulo }}</h4>
+                    <p><em>{{ conteudo.sub_texto|safe }}</em></p>
                 </div>
-                {% endif %}
                 {% endfor %}
             </div>
-            {% endif %}
             {% endfor %}
-        </div>        
+            {% else %}
+            {% for indice_titulo, conteudos in indices.items %}
+            <div class="col-md-12" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="resume-title mt-0">{{ indice_titulo }}</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        {% for conteudo in conteudos|slice:":2" %}
+                        <div class="resume-item">
+                            <h4>{{ conteudo.sub_titulo }}</h4>
+                            <p><em>{{ conteudo.sub_texto|safe }}</em></p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        {% for conteudo in conteudos|slice:"2:" %}
+                        <div class="resume-item">
+                            <h4>{{ conteudo.sub_titulo }}</h4>
+                            <p><em>{{ conteudo.sub_texto|safe }}</em></p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
         {% endfor %}
-
+    </div>
 </section>

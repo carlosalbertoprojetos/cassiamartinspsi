@@ -5,25 +5,25 @@
         {% for d in topicos %}
         <div class="section-title">
             <h2>{{ d.titulo }}</h2>
-            <p>{{ d.texto|safe|truncatechars:480 }}</p>
+            <p>{{ d.texto|safe }}</p>
         </div>
 
         <div class="row">
             {% for st in subtopicos %}
             {% if d.titulo == st.topico.titulo %}
-                <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
-                    <a href="{%  url 'dados:get_sub_topicos' st.id %}" class="scrollto"
-                            title="{{ st.sub_titulo }}">
+            <div class="col-lg-4 col-md-6 icon-box" data-aos="fade-up" data-aos-delay="100">
+                <a href="{%  url 'dados:get_sub_topicos' st.id %}" class="scrollto" title="{{ st.sub_titulo }}">
                     <div class="icon"><i class="bi bi-{{ st.icone }}"></i></div>
                     <div id="id_subtopicos">
                         <h4 class="title">{{ st.sub_titulo|slice:":50" }}</h4>
                         {{ st.sub_texto|safe|truncatechars:105 }}
                     </div>
-                    </a>
-                </div>
-                {% if forloop.counter|divisibleby:3 and not forloop.last %}
-                    </div><div class="row">
-                {% endif %}
+                </a>
+            </div>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+        </div>
+        <div class="row">
+            {% endif %}
             {% endif %}
             {% endfor %}
         </div>

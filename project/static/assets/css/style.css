@@ -1416,3 +1416,30 @@ textarea.form-control-lg {
 .text12 {
   font-size: 12px;
 }
+
+
+/* dividir colunas indices abordagem */
+.resume-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  /* Espaçamento entre os itens */
+}
+
+.resume-item {
+  flex: 1 1 calc(50% - 20px);
+  /* Cada item ocupa 50% menos o gap */
+  box-sizing: border-box;
+  /* Garante que padding não afeta o tamanho */
+}
+
+/* Para telas menores, mantenha uma única coluna */
+@media (max-width: 768px) {
+  .resume-item {
+    flex: 1 1 100%;
+  }
+}
+
+#abordagem {
+  min-height: 75vh;
+}

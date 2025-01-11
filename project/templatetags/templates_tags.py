@@ -2,13 +2,12 @@ from django import template
 from datetime import date, datetime
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
+from collections import defaultdict
 
 
 from dados.models import (
     Home,
     Apresentacao,
-    Abordagem,
-    IndicesAbordagem,
     TextosIndiceAbordagem,
     Experiencia,
     Card,
@@ -17,6 +16,7 @@ from dados.models import (
 )
 
 register = template.Library()
+hoje = date.today()
 
 
 @register.inclusion_tag("includes/header.html")
@@ -35,13 +35,24 @@ def show_apresentacao():
 
 @register.inclusion_tag("includes/abordagem.html")
 def show_abordagem():
-    abordagem = Abordagem.objects.filter(atual=True)
-    indice = IndicesAbordagem.objects.all()
-    indice_abordagem = TextosIndiceAbordagem.objects.all()
+    dados_organizados = defaultdict(lambda: defaultdict(list))
+
+    # Obtém as abordagens, seus respectivos índices e conteúdos
+    abordagens = TextosIndiceAbordagem.objects.filter(
+        indice__abordagem__atual=True, data_publicacao__lte=hoje
+    )
+    for item in abordagens:
+        abordagem_titulo = item.indice.abordagem.titulo
+        indice_titulo = item.indice.titulo
+        dados_organizados[abordagem_titulo][indice_titulo].append(item)
+
+    # Converte defaultdicts aninhados em dicionários simples
+    dados_organizados = {
+        abordagem: dict(indices) for abordagem, indices in dados_organizados.items()
+    }
+
     context = {
-        "abordagem": abordagem,
-        "indice": indice,
-        "indice_abordagem": indice_abordagem,
+        "dados_organizados": dados_organizados,
     }
     return context
 
@@ -50,17 +61,17 @@ def show_abordagem():
 def show_experiencia():
     experiencia = Experiencia.objects.filter(atual=True)
     data_desejada = datetime.now()
-    # filtra os objetos publicados com data de publicação maior ou igual à hoje
+    # filtra os objetos exibindos com data de publicação maior ou igual à hoje
     card = Card.objects.filter(
-        publicado=True,
+        exibindo=True,
         data_publicacao__isnull=False,
         data_publicacao__lte=data_desejada,
     )
 
-    # Filtra o ID mais recente de cada grupo onde publicado é True
+    # Filtra o ID mais recente de cada grupo onde exibindo é True
     latest_ids = (
         Card.objects.filter(
-            publicado=True,
+            exibindo=True,
             data_publicacao__isnull=False,
             data_publicacao__lte=data_desejada,
         )
@@ -88,7 +99,7 @@ def show_card_experiencia(card_id):
     card = get_object_or_404(
         Card,
         id=card_id,
-        publicado=True,
+        exibindo=True,
         data_publicacao__isnull=False,
         data_publicacao__lte=data_desejada,
     )
@@ -104,7 +115,7 @@ def show_topicos():
 
     # Filtra os sub-tópicos
     subtopicos = SubTopico.objects.filter(
-        publicado=True, data_publicacao__lte=hoje
+        exibindo=True, data_publicacao__lte=hoje
     ).order_by("-data_publicacao")[:6]
 
     icones = [
