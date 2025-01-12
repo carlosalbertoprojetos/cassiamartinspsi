@@ -1,6 +1,6 @@
 # CassiaMartinsPsi
 
-Projeto desenvolvido com Django para criar uma **Landing Page** voltada à identidade profissional em Psicologia.
+Projeto desenvolvido em Django de uma framework com características de Landing Page voltada à identidade profissional em Psicologia. 
 
 A página oferece informações sobre a atuação, abordagens, experiência, artigos e formas de contato. O sistema possibilita a gestão de conteúdo de maneira prática, com uma estrutura que facilita a atualização das informações relacionadas à área de psicologia. A aplicação é uma solução personalizada para profissionais que desejam apresentar sua experiência e estabelecer uma presença online de forma eficiente.
 
