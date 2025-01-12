@@ -4,8 +4,8 @@
     <div class="container">
         {% for d in experiencia %}
         <div class="section-title">
-            <h2>{{ d.titulo }}</h2>
-            <p>{{ d.texto|safe }}</p>
+            <h2>{{ d.experiencia.titulo }}</h2>
+            <p>{{ d.experiencia.texto|safe }}</p>
         </div>
         <div class="row" data-aos="fade-up">
             <div class="col-lg-12 d-flex justify-content-center">

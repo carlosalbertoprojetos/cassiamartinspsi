@@ -22,15 +22,18 @@ from .models import (
 
 
 @admin.register(Endereco)
-class Endereco(admin.ModelAdmin): ...
+class Endereco(admin.ModelAdmin):
+    fieldsets = [("Endereço", {"fields": ("endereco", "atual")})]
 
 
 @admin.register(Email)
-class Email(admin.ModelAdmin): ...
+class Email(admin.ModelAdmin):
+    fieldsets = [("Email", {"fields": ("email", "atual")})]
 
 
 @admin.register(Telefone)
-class Telefone(admin.ModelAdmin): ...
+class Telefone(admin.ModelAdmin):
+    fieldsets = [("Telefone", {"fields": ("numero",)})]
 
 
 @admin.register(Home)
@@ -39,7 +42,10 @@ class Home(admin.ModelAdmin):
     list_display = ["titulo", "atual", "letreiro"]
     readonly_fields = ("visualizar_imagem",)
     fieldsets = [
-        ("Tema", {"fields": ("titulo", "atual", ("foto", "visualizar_imagem"))}),
+        (
+            "Tema",
+            {"fields": ("titulo", "atual", "letreiro", ("foto", "visualizar_imagem"))},
+        ),
         ("Assunto", {"fields": ("redes_sociais",)}),
     ]
     list_filter = ["titulo", "letreiro"]
@@ -237,10 +243,10 @@ class CardAdmin(admin.ModelAdmin):
     ordering = ("titulo",)
 
     def visualizar_imagem(self, obj):
-        if obj.foto:  # Certifique-se de que o campo existe e contém um valor
+        if obj.imagem:  # Certifique-se de que o campo existe e contém um valor
             return format_html(
                 '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
-                obj.foto.url,
+                obj.imagem.url,
             )
         return "Sem imagem"
 

@@ -49,7 +49,6 @@ class Telefone(models.Model):
         return self.numero
 
 
-# https://acervolima.com/RichTextField-modelos-django/
 class Grupo(AtualizadorModel):
     titulo = models.CharField(max_length=50)
     texto = RichTextField(blank=True, null=True)
@@ -90,7 +89,7 @@ class RedeSocial(models.Model):
 
 class Home(AtualizadorModel):
     titulo = models.CharField(max_length=50)
-    foto = models.ImageField(upload_to="home/foto/")
+    foto = models.ImageField(upload_to="home/foto/", blank=True, null=True)
     letreiro = models.JSONField(blank=True, null=True)
     redes_sociais = models.ManyToManyField(RedeSocial)
 
@@ -102,7 +101,7 @@ class Home(AtualizadorModel):
 
 
 class Apresentacao(Grupo, SubGrupo):
-    foto = models.ImageField(upload_to="apresentacao/foto/")
+    foto = models.ImageField(upload_to="apresentacao/foto/", blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "2 Apresentação"
@@ -163,7 +162,7 @@ class Experiencia(Grupo):
 class Card(Grupo, TimestampedModel):
     experiencia = models.ForeignKey(Experiencia, on_delete=models.CASCADE)
     grupo = models.ForeignKey(GrupoExperiencia, on_delete=models.CASCADE)
-    imagem = models.ImageField()
+    imagem = models.ImageField(upload_to="card/foto/", blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "4.2 Card"

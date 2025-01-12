@@ -1,5 +1,5 @@
 from django import template
-from datetime import date, datetime
+from datetime import date
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
 from collections import defaultdict
@@ -9,9 +9,7 @@ from dados.models import (
     Home,
     Apresentacao,
     TextosIndiceAbordagem,
-    Experiencia,
     Card,
-    Topico,
     SubTopico,
 )
 
@@ -41,7 +39,11 @@ def show_abordagem():
 
     # Obtém as abordagens, seus respectivos índices e conteúdos
     abordagens = TextosIndiceAbordagem.objects.filter(
-        indice__abordagem__atual=True, data_publicacao__lte=hoje
+        indice__abordagem__atual=True,
+        indice__exibindo=True,
+        indice__data_publicacao__lte=hoje,
+        exibindo=True,
+        data_publicacao__lte=hoje,
     )
 
     for item in abordagens:
@@ -66,32 +68,29 @@ def show_abordagem():
 
 @register.inclusion_tag("includes/experiencia.html")
 def show_experiencia():
-    experiencia = Experiencia.objects.filter(atual=True)
-    data_desejada = datetime.now()
-    # filtra os objetos exibindos com data de publicação maior ou igual à hoje
+    # Filtra os objetos exibindos com data de publicação maior ou igual à hoje
     card = Card.objects.filter(
+        experiencia__atual=True,
         exibindo=True,
-        data_publicacao__isnull=False,
-        data_publicacao__lte=data_desejada,
+        data_publicacao__lte=hoje,
     )
 
     # Filtra o ID mais recente de cada grupo onde exibindo é True
     latest_ids = (
-        Card.objects.filter(
-            exibindo=True,
-            data_publicacao__isnull=False,
-            data_publicacao__lte=data_desejada,
-        )
-        .values("grupo")
+        card.values("grupo")
         .annotate(latest_id=Max("id"))
         .values_list("latest_id", flat=True)
     )
 
     # Filtra os grupos associados aos IDs mais recentes obtidos acima
-    grupos = Card.objects.filter(id__in=latest_ids).values("grupo__nome").distinct()
+    grupos = (
+        Card.objects.filter(id__in=latest_ids, exibindo=True, data_publicacao__lte=hoje)
+        .values("grupo__nome")
+        .distinct()
+    )
 
     context = {
-        "experiencia": experiencia,
+        "experiencia": card,
         "grupos": grupos,
         "card": card,
     }
@@ -100,30 +99,28 @@ def show_experiencia():
 
 @register.inclusion_tag("includes/cardExperiencia.html")
 def show_card_experiencia(card_id):
-    data_desejada = datetime.now()
-
-    # Use get_object_or_404 para pegar um único objeto
+    # Usa o get_object_or_404 para pegar um único objeto
     card = get_object_or_404(
         Card,
         id=card_id,
+        experiencia__atual=True,
         exibindo=True,
-        data_publicacao__isnull=False,
-        data_publicacao__lte=data_desejada,
+        data_publicacao__lte=hoje,
     )
 
-    context = {"card": card}  # card agora é um único objeto
+    context = {"card": card}  # Card como único objeto
     return context
 
 
 @register.inclusion_tag("includes/topicos.html")
 def show_topicos():
-    topicos = Topico.objects.filter(atual=True)
-    hoje = date.today()
-
     # Filtra os sub-tópicos
     subtopicos = SubTopico.objects.filter(
-        exibindo=True, data_publicacao__lte=hoje
+        topico__atual=True, exibindo=True, data_publicacao__lte=hoje
     ).order_by("-data_publicacao")[:6]
+
+    # Filtra o título e o texto do tópico
+    topico = subtopicos.values_list("topico__titulo", "topico__texto").first()
 
     icones = [
         "bi bi-briefcase",
@@ -138,13 +135,8 @@ def show_topicos():
     for i, subtopico in enumerate(subtopicos):
         subtopico.icone = icones[i % len(icones)]  # Usar ícones de forma cíclica
 
-    context = {"topicos": topicos, "subtopicos": subtopicos}
+    context = {"topico": topico, "subtopicos": subtopicos}
     return context
-
-
-@register.inclusion_tag("includes/.html")
-def show_():
-    pass
 
 
 @register.inclusion_tag("includes/footer.html")
