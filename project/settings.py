@@ -1,5 +1,6 @@
 import os
 import dj_database_url
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -10,12 +11,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-y@m(k4()e#y1c*+=n(1f5g9qkeebvh2%y(_)8wmi-m^$q_pi0@"
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = ["127.0.0.1", "[::1]", "*"]
+# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*"]  # ← Updated!
+# # Garantir que os valores sejam limpos de espaços em branco
+# ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
 
 # Application definition
 INSTALLED_APPS = [
@@ -34,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -41,6 +46,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Configura o WhiteNoise para compressão e cache
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = "project.urls"
 
@@ -69,12 +77,24 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("DB_NAME", "default_db"),
+#         "USER": os.getenv("DB_USER", "default_user"),
+#         "PASSWORD": os.getenv("DB_PASSWORD", "default_password"),
+#         "HOST": os.getenv("DB_HOST", "localhost"),
+#         "PORT": os.getenv("DB_PORT", "5432"),
+#     }
+# }
 
 # DATABASES = {
 #     "default": {
@@ -88,7 +108,7 @@ DATABASES = {
 # }
 
 # DATABASES = {
-#     "default": dj_database_url.config(
+#     "default": dj_database_url.os.getenv(
 #         default=os.environ.get(
 #             "DATABASE_URL",
 #             "postgres://postgres:admin@localhost:5432/cassiamartinspsibd",
@@ -162,11 +182,9 @@ CKEDITOR_5_CONFIGS = {
 }
 
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"  # Servidor SMTP
-EMAIL_PORT = 587  # Porta do servidor SMTP
-EMAIL_USE_TLS = True  # Usar TLS
-EMAIL_HOST_USER = "seuemail@gmail.com"  # Seu e-mail
-EMAIL_HOST_PASSWORD = "sua_senha_ou_senha_do_app"  # Sua senha ou senha do app
-DEFAULT_FROM_EMAIL = "seuemail@gmail.com"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
