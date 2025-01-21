@@ -1,5 +1,4 @@
 import os
-import dj_database_url
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -16,8 +15,8 @@ project_path = os.getenv("PROJECT_PATH")
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["127.0.0.1", "[::1]", "*"]
-# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+# ALLOWED_HOSTS = ["127.0.0.1", "[::1]", "*"]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 # # Garantir que os valores sejam limpos de espaços em branco
 # ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
@@ -79,13 +78,6 @@ WSGI_APPLICATION = "project.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-#     }
-# }
-
 # Configuração do Banco de Dados Postgresql
 DATABASES = {
     "default": {
@@ -97,15 +89,6 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
-
-# DATABASES = {
-#     "default": dj_database_url.os.getenv(
-#         default=os.environ.get(
-#             "DATABASE_URL",
-#             "postgres://postgres:admin@localhost:5432/cassiamartinspsibd",
-#         )
-#     )
-# }
 
 
 # Password validation
@@ -151,7 +134,7 @@ MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "staticfiles")
 
