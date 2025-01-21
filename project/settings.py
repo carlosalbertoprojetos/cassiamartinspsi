@@ -158,4 +158,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://191.252.210.177",
 ]
 
-SECURE_SSL_REDIRECT = True  # Certifique-se de que esta opção está definida para True
+# Se estiver usando HTTPS, ative
+# SECURE_SSL_REDIRECT = True
+
+# Caso esteja em desenvolvimento ou configurando, desative
+SECURE_SSL_REDIRECT = False
