@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 project_path = os.getenv("PROJECT_PATH")
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 # Application definition
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django_json_widget",
     "ckeditor",
     "ckeditor_uploader",
+    "sslserver",
 ]
 
 MIDDLEWARE = [
@@ -70,17 +71,25 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Configuração do Banco de Dados Postgresql
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "default_db"),
-        "USER": os.getenv("DB_USER", "default_user"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "default_password"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
+
+
+# Configuração do Banco de Dados Postgresql
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("DB_NAME", "default_db"),
+#         "USER": os.getenv("DB_USER", "default_user"),
+#         "PASSWORD": os.getenv("DB_PASSWORD", "default_password"),
+#         "HOST": os.getenv("DB_HOST", "localhost"),
+#         "PORT": os.getenv("DB_PORT", "5432"),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -128,7 +137,7 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "project/static"),)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "project/static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -162,4 +171,4 @@ CSRF_TRUSTED_ORIGINS = [
 # SECURE_SSL_REDIRECT = True
 
 # Caso esteja em desenvolvimento ou configurando, desative
-SECURE_SSL_REDIRECT = False
+# SECURE_SSL_REDIRECT = False
