@@ -19,7 +19,7 @@ class AtualizadorModel(models.Model):
         super().save(*args, **kwargs)
 
 
-class Endereco(AtualizadorModel):
+class Endereco(models.Model):
     endereco = models.CharField(max_length=255)
 
     class Meta:
@@ -171,10 +171,10 @@ class Card(Grupo, TimestampedModel):
         return f"{self.experiencia.titulo} - {self.grupo.nome} - {self.titulo}"
 
 
-class Topico(Grupo):
+class Topico(Grupo, AtualizadorModel):
 
     class Meta:
-        verbose_name_plural = "5 Tópico"
+        verbose_name_plural = "5 Atualidades"
 
     def __str__(self):
         return self.titulo

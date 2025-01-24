@@ -1,3 +1,4 @@
+{% if dados_organizados %}
 <section id="abordagem" class="resume vh-100 overflow-auto">
     <div class="container">
         {% for abordagem_titulo, indices in dados_organizados.items %}
@@ -47,3 +48,4 @@
         {% endfor %}
     </div>
 </section>
+{% endif %}

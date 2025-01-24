@@ -23,7 +23,7 @@ from .models import (
 
 @admin.register(Endereco)
 class Endereco(admin.ModelAdmin):
-    fieldsets = [("Endereço", {"fields": ("endereco", "atual")})]
+    fieldsets = [("Endereço", {"fields": ("endereco",)})]
 
 
 @admin.register(Email)
@@ -50,7 +50,10 @@ class Home(admin.ModelAdmin):
     ]
     list_filter = ["titulo", "letreiro"]
     search_fields = ["titulo", "letreiro"]
-    ordering = ("titulo",)
+    ordering = (
+        "atual",
+        "titulo",
+    )
 
     def visualizar_imagem(self, obj):
         if obj.foto:  # Certifique-se de que o campo existe e contém um valor
@@ -113,7 +116,10 @@ class Abordagem(admin.ModelAdmin):
     search_fields = [
         "titulo",
     ]
-    ordering = ("titulo",)
+    ordering = (
+        "atual",
+        "titulo",
+    )
 
     def sub_texto_truncado(self, obj):
         return Truncator(obj.texto).chars(50)  # Limita a 50 caracteres
@@ -278,7 +284,10 @@ class ExperienciaAdmin(admin.ModelAdmin):
     search_fields = [
         "titulo",
     ]
-    ordering = ("titulo",)
+    ordering = (
+        "atual",
+        "titulo",
+    )
 
     def sub_texto_truncado(self, obj):
         return Truncator(obj.texto).chars(50)  # Limita a 50 caracteres
@@ -333,11 +342,14 @@ class TopicoAdmin(admin.ModelAdmin):
         "sub_texto_truncado",
     ]
     fieldsets = [
-        ("Assunto", {"fields": ("titulo", "texto")}),
+        ("Assunto", {"fields": ("titulo", "atual", "texto")}),
     ]
     list_filter = ["titulo"]
     search_fields = ["titulo"]
-    ordering = ("titulo",)
+    ordering = (
+        "atual",
+        "titulo",
+    )
 
     def sub_texto_truncado(self, obj):
         return Truncator(obj.texto).chars(50)  # Limita a 50 caracteres

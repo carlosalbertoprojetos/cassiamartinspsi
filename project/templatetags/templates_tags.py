@@ -1,5 +1,5 @@
 from django import template
-from datetime import date
+from django.utils.timezone import now
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
 from collections import defaultdict
@@ -14,7 +14,7 @@ from dados.models import (
 )
 
 register = template.Library()
-hoje = date.today()
+hoje = now().date()
 
 
 @register.inclusion_tag("includes/header.html")
@@ -68,6 +68,17 @@ def show_abordagem():
 
 @register.inclusion_tag("includes/experiencia.html")
 def show_experiencia():
+    # Recuperar o primeiro card que atende aos critérios
+    experiencia = (
+        Card.objects.filter(
+            experiencia__atual=True,
+            exibindo=True,
+            data_publicacao__lte=hoje,
+        )
+        .select_related("experiencia", "grupo")  # Otimizar consultas relacionadas
+        .first()  # Retorna o primeiro Card
+    )
+
     # Filtra os objetos exibindos com data de publicação maior ou igual à hoje
     card = Card.objects.filter(
         experiencia__atual=True,
@@ -90,7 +101,7 @@ def show_experiencia():
     )
 
     context = {
-        "experiencia": card,
+        "experiencia": experiencia,
         "grupos": grupos,
         "card": card,
     }

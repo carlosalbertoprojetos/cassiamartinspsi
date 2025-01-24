@@ -10,7 +10,7 @@ from dados.models import Card, Endereco, Email, Home, SubTopico, Telefone
 # Create your views here.
 def index(request):
     template_name = "index.html"
-    endereco = Endereco.objects.all().last()
+    endereco = Endereco.objects.all().order_by("-id")[:2]
     email = Email.objects.all().last()
     telefone = Telefone.objects.all().last()
     context = {"endereco": endereco, "email": email, "telefone": telefone}
