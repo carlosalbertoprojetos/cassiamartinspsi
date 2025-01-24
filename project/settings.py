@@ -167,3 +167,5 @@ CSRF_TRUSTED_ORIGINS = [
     "https://cassiamartinspsi.com.br",
     "http://191.252.210.177",
 ]
+
+SECURE_SSL_REDIRECT = False
