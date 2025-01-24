@@ -169,3 +169,5 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_DOMAIN = ".cassiamartinspsi.com.br"
+CSRF_COOKIE_DOMAIN = ".cassiamartinspsi.com.br"
