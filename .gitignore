@@ -164,3 +164,4 @@ cython_debug/
 
 .media
 .env
+key.pem
