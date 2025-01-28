@@ -21,6 +21,10 @@ from .models import (
 )
 
 
+IMAGE_HTML = '<img src="{}" style="max-height: 200px; max-width: 200px;" />'
+DATE_FORMAT = "%d/%m/%Y"  # Formato de data
+
+
 @admin.register(Endereco)
 class Endereco(admin.ModelAdmin):
     fieldsets = [("Endereço", {"fields": ("endereco",)})]
@@ -58,7 +62,7 @@ class Home(admin.ModelAdmin):
     def visualizar_imagem(self, obj):
         if obj.foto:  # Certifique-se de que o campo existe e contém um valor
             return format_html(
-                '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
+                IMAGE_HTML,
                 obj.foto.url,
             )
         return "Sem imagem"
@@ -93,7 +97,7 @@ class Apresentacao(admin.ModelAdmin):
     def visualizar_imagem(self, obj):
         if obj.foto:  # Certifique-se de que o campo existe e contém um valor
             return format_html(
-                '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
+                IMAGE_HTML,
                 obj.foto.url,
             )
         return "Sem imagem"
@@ -157,7 +161,7 @@ class IndicesAbordagemAdmin(admin.ModelAdmin):
 
     def format_data(self, obj):
         if obj.data:
-            return obj.data.strftime("%d/%m/%Y")
+            return obj.data.strftime(DATE_FORMAT)
         return "—"
 
     format_data.short_description = "Criado"
@@ -194,7 +198,7 @@ class TextosIndiceAbordagem(admin.ModelAdmin):
 
     def format_data(self, obj):
         if obj.data:
-            return obj.data.strftime("%d/%m/%Y")
+            return obj.data.strftime(DATE_FORMAT)
         return "—"
 
     format_data.short_description = "Criado"
@@ -251,7 +255,7 @@ class CardAdmin(admin.ModelAdmin):
     def visualizar_imagem(self, obj):
         if obj.imagem:  # Certifique-se de que o campo existe e contém um valor
             return format_html(
-                '<img src="{}" style="max-height: 200px; max-width: 200px;" />',
+                IMAGE_HTML,
                 obj.imagem.url,
             )
         return "Sem imagem"
@@ -260,7 +264,7 @@ class CardAdmin(admin.ModelAdmin):
 
     def format_data(self, obj):
         if obj.data:
-            return obj.data.strftime("%d/%m/%Y")
+            return obj.data.strftime(DATE_FORMAT)
         return "—"
 
     format_data.short_description = "Criado"
@@ -324,7 +328,7 @@ class SubTopico(admin.ModelAdmin):
 
     def format_data(self, obj):
         if obj.data:
-            return obj.data.strftime("%d/%m/%Y")
+            return obj.data.strftime(DATE_FORMAT)
         return "—"
 
     format_data.short_description = "Criado"
