@@ -161,6 +161,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://191.252.210.177",
 ]
 
+# Produção
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_DOMAIN = ".cassiamartinspsi.com.br"
 CSRF_COOKIE_DOMAIN = ".cassiamartinspsi.com.br"
